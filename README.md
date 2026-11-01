@@ -1,11 +1,12 @@
 # pdc reserves too little memory when .bss is more than 4-byte aligned
 
-Minimal repro for a Playdate C SDK bug (SDK 3.1.1, firmware 3.1.1, macOS,
-`arm-none-eabi-gcc` 9-2019-q4-major): when the start of a game's `.bss` needs
-more than 4-byte alignment, which happens with a single `double` or `int64_t`
-global, the last bytes of `.bss` end up outside the memory the OS reserves for
-the game. The last word of `.bss` is always `pdrealloc` from the SDK's
-`setup.c`, so that pointer is always among the bytes affected.
+Minimal repro for a Playdate C SDK bug (SDK 3.1.2, also seen with 2.7.2;
+firmware 3.1.1; macOS, `arm-none-eabi-gcc` 9-2019-q4-major): when the start
+of a game's `.bss` needs more than 4-byte alignment, which happens with a
+single `double` or `int64_t` global, the last bytes of `.bss` end up outside
+the memory the OS reserves for the game. The last word of `.bss` is always
+`pdrealloc` from the SDK's `setup.c`, so that pointer is always among the
+bytes affected.
 
 ## Cause
 
