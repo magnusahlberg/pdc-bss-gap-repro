@@ -1,0 +1,6 @@
+name=BssGap
+author=pdc bss gap repro
+description=Shows .bss bytes outside the memory reserved by pdc
+bundleID=xyz.magnus.bssgaprepro
+version=1.0
+buildNumber=1
