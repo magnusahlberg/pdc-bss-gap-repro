@@ -27,13 +27,18 @@
 #endif
 volatile uint32_t data_pad[DATA_WORDS] = { 1 };
 
-// All of this file's .bss in one object, so its layout is fixed: 16-byte
-// aligned (as a cglm mat4 or any SIMD type would be), canaries last. The
-// only .bss after it is setup.c's pdrealloc, the last word of .bss.
+// All of this file's .bss in one object, so its layout is fixed, canaries
+// last. The only .bss after it is setup.c's pdrealloc, the last word of .bss.
+// By default the object is 16-byte aligned (as a cglm mat4 or any SIMD type
+// would be); with -DUSE_DOUBLE it holds plain doubles, 8-byte aligned.
 #define CANARY_COUNT 8
 #define LINE_COUNT 12
 static struct {
+#ifdef USE_DOUBLE
+	double matrix[2];
+#else
 	float matrix[4] __attribute__((aligned(16)));
+#endif
 	PlaydateAPI* pd;
 	LCDFont* font;
 	int lineCount;
